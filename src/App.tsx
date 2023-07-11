@@ -37,6 +37,14 @@ const App = () => {
     }
   };
 
+  const handleRestart = () => {
+    setParagraph(generateText());
+    setTypedText('');
+    setShowResult(false);
+
+    setStartTime(0);
+  };
+
   return (
     <div className='flex flex-col items-center'>
       {showResult && (
@@ -44,42 +52,56 @@ const App = () => {
           <h1 className='text-3xl'>Your typing speed is {wpm} WPM</h1>
         </div>
       )}
-      <p className='text-center w-3/4'>
-        {paragraph.split('').map((letter, i) => {
-          return (
-            <span
-              key={i}
-              className={`
+
+      {showResult && (
+        <button
+          className='bg-blue-500 text-white px-4 py-2 rounded-md my-4 z-[999]'
+          onClick={handleRestart}
+        >
+          Restart
+        </button>
+      )}
+
+      {!showResult && (
+        <>
+          <p className='text-center w-3/4'>
+            {paragraph.split('').map((letter, i) => {
+              return (
+                <span
+                  key={i}
+                  className={`
                 
-                
+              
                 opacity-75
                 transition
                 duration-75
                 ease-in-out
-
+                
                 ${!typedText[i] ? 'bg-gray-500' : ''}
-          ${
-            !typedText[i]
-              ? ''
-              : typedText[i] === letter
-              ? 'bg-green-300'
-              : 'bg-red-300'
-          }
-                
-                
-                
-                `}
-            >
-              {letter}
-            </span>
-          );
-        })}
-      </p>
-      <input
-        className='opacity-0 absolute top-0  left-0 h-screen w-screen z-50 cursor-default'
-        autoFocus
-        onKeyDown={handleKeyDown}
-      />
+                ${
+                  !typedText[i]
+                    ? ''
+                    : typedText[i] === letter
+                    ? 'bg-green-300'
+                    : 'bg-red-300'
+                }
+            
+            
+            
+            `}
+                >
+                  {letter}
+                </span>
+              );
+            })}
+          </p>
+          <input
+            className='opacity-0 absolute top-0  left-0 h-screen w-screen z-50 cursor-default'
+            autoFocus
+            onKeyDown={handleKeyDown}
+          />
+        </>
+      )}
     </div>
   );
 };
